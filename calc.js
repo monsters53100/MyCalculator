@@ -4,6 +4,7 @@ let allBtn = document.querySelectorAll("button");
 let val1= document.getElementById("val1");
 let val2= document.getElementById("val2");
 let result = document.getElementById("result");
+let memory = document.getElementById("memory");
 
 allBtn.forEach(btn => {
     console.log(btn);
@@ -29,7 +30,19 @@ allBtn.forEach(btn => {
         if(res instanceof Error) {
             result.innerText = "Error: " + res.message;
         }else{
-            result.innerText = "Result " + res;
+            result.innerText = "Risultato " + res;
+
+            let myLog = new MyLog(a,b,operation);
+            let btnLoad = document.createElement("button");
+            btnLoad.innerText = "LOAD";
+            btnLoad.addEventListener("click", myLog.fnLoad);
+
+            let logLine = document.createElement("li");
+            logLine.innerText = `Eseguito ${myLog.val1} ${myLog.operation} ${myLog.val2}`;
+            logLine.append(btnLoad);
+
+            memory.appendChild(logLine);
+
         }
     })
 });
@@ -55,6 +68,18 @@ function performOperation(a, b, operation) {
         default:
             return Error("Operazione non valida");
 
+    }
+
+}
+
+function MyLog(a, b, operation) {
+    this.val1 = a;
+    this.val2 = b;
+    this.operation = operation;
+
+    this.fnLoad = () => {
+        val1.value = this.val1;
+        val2.value = this.val2;
     }
 
 }
